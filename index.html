@@ -271,16 +271,31 @@
                 <p class="lead mb-4">Erzählen Sie mir kurz von Ihrem Vorhaben &ndash; ich melde mich zeitnah. Auch bei einem einzelnen Workshop oder einer kurzen Beratung.</p>
                 <div class="row">
                     <div class="col-lg-7 mb-4">
-                        <form action="https://formsubmit.co/medienarbeit@steier.xyz" method="POST">
-                            <input type="hidden" name="_subject" value="Neue Anfrage über steier.xyz">
-                            <input type="hidden" name="_captcha" value="true">
-                            <input type="hidden" name="_template" value="table">
-                            <div class="form-group"><input type="text" name="Name" class="form-control" placeholder="Ihr Name" required></div>
-                            <div class="form-group"><input type="email" name="E-Mail" class="form-control" placeholder="Ihre E-Mail" required></div>
-                            <div class="form-group"><input type="text" name="Einrichtung" class="form-control" placeholder="Einrichtung / Organisation (optional)"></div>
-                            <div class="form-group"><textarea name="Nachricht" rows="5" class="form-control" placeholder="Worum geht es? Zielgruppe, ungefähre Gruppengröße, Wunschtermin …" required></textarea></div>
+                        <form id="kontaktform" onsubmit="return sendMailto(this);">
+                            <div class="form-group"><input type="text" id="kf-name" class="form-control" placeholder="Ihr Name" required></div>
+                            <div class="form-group"><input type="email" id="kf-mail" class="form-control" placeholder="Ihre E-Mail" required></div>
+                            <div class="form-group"><input type="text" id="kf-org" class="form-control" placeholder="Einrichtung / Organisation (optional)"></div>
+                            <div class="form-group"><textarea id="kf-text" rows="5" class="form-control" placeholder="Worum geht es? Zielgruppe, ungefähre Gruppengröße, Wunschtermin …" required></textarea></div>
                             <button type="submit" class="btn btn-primary btn-lg">Anfrage senden</button>
+                            <small class="form-text text-muted mt-2">Beim Absenden öffnet sich Ihr E-Mail-Programm mit einer vorausgefüllten Nachricht &ndash; Sie schicken sie dann einfach ab.</small>
                         </form>
+                        <script>
+                        function sendMailto(f){
+                          var name = document.getElementById('kf-name').value;
+                          var mail = document.getElementById('kf-mail').value;
+                          var org  = document.getElementById('kf-org').value;
+                          var text = document.getElementById('kf-text').value;
+                          var subject = 'Anfrage über steier.xyz' + (name ? ' von ' + name : '');
+                          var body = 'Name: ' + name + '\n'
+                                   + 'E-Mail: ' + mail + '\n'
+                                   + (org ? 'Einrichtung: ' + org + '\n' : '')
+                                   + '\n' + text + '\n';
+                          window.location.href = 'mailto:medienarbeit@steier.xyz'
+                                   + '?subject=' + encodeURIComponent(subject)
+                                   + '&body=' + encodeURIComponent(body);
+                          return false;
+                        }
+                        </script>
                     </div>
                     <div class="col-lg-5">
                         <p class="mb-2">Lieber direkt?</p>
